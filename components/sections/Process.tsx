@@ -38,126 +38,6 @@ const steps = [
   },
 ];
 
-function DesktopProcess({ isInView }: { isInView: boolean }) {
-  return (
-    <div className="hidden lg:block relative">
-      {/* Connecting line */}
-      <div className="relative h-px w-full bg-white/5 my-16">
-        <motion.div
-          className="absolute top-0 left-0 h-full bg-gradient-to-r from-gold/80 via-gold to-gold/40"
-          initial={{ scaleX: 0 }}
-          animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-          transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.4 }}
-          style={{ transformOrigin: "left", width: "100%" }}
-        />
-        {/* Arrow at end of line */}
-        <motion.div
-          className="absolute right-0 top-1/2 -translate-y-1/2"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 1.6, duration: 0.3 }}
-        >
-          <svg width="10" height="10" viewBox="0 0 10 10">
-            <path d="M0 5h8M5 1l4 4-4 4" stroke="#0C6170" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          </svg>
-        </motion.div>
-      </div>
-
-      {/* Steps — positioned above and below the line alternately */}
-      <div className="absolute top-0 left-0 right-0 flex justify-between px-0">
-        {steps.map((step, index) => {
-          const isAbove = index % 2 === 0;
-          return (
-            <motion.div
-              key={step.phase}
-              className="flex flex-col items-center w-40"
-              initial={{ opacity: 0, y: isAbove ? -20 : 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: isAbove ? -20 : 20 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 + index * 0.15 }}
-            >
-              {/* Content above for even, below for odd */}
-              {isAbove ? (
-                <>
-                  <div className="text-center mb-4">
-                    <p className="text-white/40 text-xs tracking-widest mb-1">{step.step}</p>
-                    <h3 className="font-display font-bold text-white text-base mb-2">{step.phase}</h3>
-                    <p className="text-white/40 text-xs leading-relaxed">{step.description}</p>
-                  </div>
-                  {/* Node on line */}
-                  <div className="w-px h-12 bg-gold/30" />
-                  <div className="w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep relative z-10" />
-                  <div className="w-px h-12 invisible" />
-                  <div className="invisible text-center">
-                    <p className="text-white/40 text-xs tracking-widest mb-1">{step.step}</p>
-                    <h3 className="font-display font-bold text-white text-base mb-2">{step.phase}</h3>
-                    <p className="text-white/40 text-xs leading-relaxed">{step.description}</p>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="invisible text-center mb-4">
-                    <p className="text-white/40 text-xs tracking-widest mb-1">{step.step}</p>
-                    <h3 className="font-display font-bold text-white text-base mb-2">{step.phase}</h3>
-                    <p className="text-white/40 text-xs leading-relaxed">{step.description}</p>
-                  </div>
-                  <div className="w-px h-12 invisible" />
-                  <div className="w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep relative z-10" />
-                  <div className="w-px h-12 bg-gold/30" />
-                  <div className="text-center mt-4">
-                    <p className="text-white/40 text-xs tracking-widest mb-1">{step.step}</p>
-                    <h3 className="font-display font-bold text-white text-base mb-2">{step.phase}</h3>
-                    <p className="text-white/40 text-xs leading-relaxed">{step.description}</p>
-                  </div>
-                </>
-              )}
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function MobileProcess({ isInView }: { isInView: boolean }) {
-  return (
-    <div className="lg:hidden relative pl-8">
-      {/* Vertical line */}
-      <div className="absolute left-3 top-0 bottom-0 w-px bg-white/5">
-        <motion.div
-          className="absolute top-0 left-0 w-full bg-gradient-to-b from-gold/80 to-gold/20"
-          initial={{ scaleY: 0 }}
-          animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-          transition={{ duration: 1.4, ease: "easeInOut", delay: 0.3 }}
-          style={{ transformOrigin: "top", height: "100%" }}
-        />
-      </div>
-
-      <div className="flex flex-col gap-10">
-        {steps.map((step, index) => (
-          <motion.div
-            key={step.phase}
-            className="relative flex gap-6 items-start"
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 + index * 0.12 }}
-          >
-            {/* Node */}
-            <div className="absolute -left-8 top-1 w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep flex-shrink-0" />
-
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-gold/60 text-xs tracking-widest">{step.step}</span>
-                <h3 className="font-display font-bold text-white text-lg">{step.phase}</h3>
-              </div>
-              <p className="text-white/50 text-sm leading-relaxed">{step.description}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function Process() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -184,9 +64,87 @@ export default function Process() {
           </motion.p>
         </motion.div>
 
-        {/* Timeline */}
-        <DesktopProcess isInView={isInView} />
-        <MobileProcess isInView={isInView} />
+        {/* Desktop timeline */}
+        <div className="hidden lg:block">
+          {/* Line */}
+          <div className="relative h-px w-full bg-white/5 mb-10">
+            <motion.div
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-gold/80 via-gold to-gold/40"
+              initial={{ scaleX: 0 }}
+              animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] as [number,number,number,number], delay: 0.3 }}
+              style={{ transformOrigin: "left", width: "100%" }}
+            />
+            {/* Arrow tip */}
+            <motion.div
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ delay: 1.7, duration: 0.3 }}
+            >
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M0 5h8M5 1l4 4-4 4" stroke="#0C6170" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </motion.div>
+          </div>
+
+          {/* Steps row */}
+          <div className="grid grid-cols-5 gap-6">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.phase}
+                className="flex flex-col items-center text-center gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 + index * 0.15 }}
+              >
+                {/* Node */}
+                <div className="w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep flex-shrink-0 -mt-[22px] mb-2" />
+                {/* Step number */}
+                <span className="text-white/30 text-xs tracking-widest">{step.step}</span>
+                {/* Phase name */}
+                <h3 className="font-display font-bold text-white text-base">{step.phase}</h3>
+                {/* Description */}
+                <p className="text-white/40 text-xs leading-relaxed">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile timeline */}
+        <div className="lg:hidden relative pl-8">
+          {/* Vertical line */}
+          <div className="absolute left-3 top-0 bottom-0 w-px bg-white/5">
+            <motion.div
+              className="absolute top-0 left-0 w-full bg-gradient-to-b from-gold/80 to-gold/20"
+              initial={{ scaleY: 0 }}
+              animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+              transition={{ duration: 1.4, ease: "easeInOut", delay: 0.3 }}
+              style={{ transformOrigin: "top", height: "100%" }}
+            />
+          </div>
+
+          <div className="flex flex-col gap-10">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.phase}
+                className="relative flex gap-6 items-start"
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 + index * 0.12 }}
+              >
+                <div className="absolute -left-8 top-1 w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep flex-shrink-0" />
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-gold/60 text-xs tracking-widest">{step.step}</span>
+                    <h3 className="font-display font-bold text-white text-lg">{step.phase}</h3>
+                  </div>
+                  <p className="text-white/50 text-sm leading-relaxed">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </SectionWrapper>
   );
