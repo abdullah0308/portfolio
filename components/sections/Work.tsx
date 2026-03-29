@@ -37,11 +37,11 @@ const projects = [
   },
   {
     number: "04",
-    name: "ERP Integration",
-    type: "Systems & Automation",
+    name: "Custom Web App",
+    type: "Web Experience",
     description:
-      "Connected systems enabling automation, data flow, and operational efficiency.",
-    tags: ["API", "Dashboard", "Integration"],
+      "Tailored web application built from the ground up, designed for specific business needs and seamless user workflows.",
+    tags: ["React", "Custom Build", "UX"],
     accent: "from-[#0C6170]/20 via-[#0C6170]/10 to-charcoal-deep",
     lineColor: "#0C6170",
   },
