@@ -16,7 +16,24 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+    transition: {
+      duration: 0.7,
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+    },
+  },
+};
+
+// Word-by-word reveal for tagline
+const taglineContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.9 } },
+};
+const wordVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
   },
 };
 
@@ -28,21 +45,25 @@ export default function Hero() {
   });
 
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
 
   const handleScroll = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const taglineLines = [
+    "I don't aim for perfect.",
+    "I aim for better.",
+  ];
 
   return (
     <section
       ref={containerRef}
       className="relative h-screen w-full overflow-hidden flex items-center"
     >
-      {/* Right half — image */}
+      {/* Background layout */}
       <div className="absolute inset-0 z-0 flex">
-        {/* Left half solid dark */}
         <div className="w-full md:w-1/2 h-full bg-charcoal-deep flex-shrink-0" />
-        {/* Right half — image with parallax */}
         <div className="hidden md:block relative flex-1 h-full overflow-hidden">
           <motion.div className="absolute inset-0" style={{ y: bgY }}>
             <Image
@@ -55,14 +76,12 @@ export default function Hero() {
               style={{ objectPosition: "30% center" }}
             />
           </motion.div>
-          {/* Fade left edge into the dark panel */}
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal-deep via-charcoal-deep/40 to-transparent" />
-          {/* Fade bottom */}
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal-deep via-transparent to-transparent" />
         </div>
       </div>
 
-      {/* Mobile: full bleed image with strong overlay */}
+      {/* Mobile image */}
       <div className="md:hidden absolute inset-0 z-0">
         <Image
           src="/images/hero-bg.jpeg"
@@ -77,7 +96,10 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 md:px-12 w-full">
+      <motion.div
+        className="relative z-20 max-w-7xl mx-auto px-6 md:px-12 w-full"
+        style={{ y: contentY }}
+      >
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -87,15 +109,15 @@ export default function Hero() {
           {/* Pre-label */}
           <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-gold" />
-            <span className="text-gold text-xs tracking-[0.3em] uppercase font-medium">
-              Digital Craftsman
+            <span className="text-gold text-xs tracking-[0.3em] uppercase font-mono">
+              Junior Developer · Mauritius
             </span>
           </motion.div>
 
           {/* Name */}
           <motion.h1
             variants={itemVariants}
-            className="font-display font-bold leading-none mb-6"
+            className="font-display font-bold leading-none mb-8"
           >
             <span className="block text-5xl md:text-7xl lg:text-8xl text-white">
               Abdullah
@@ -105,21 +127,35 @@ export default function Hero() {
             </span>
           </motion.h1>
 
-          {/* Tagline */}
-          <motion.p
-            variants={itemVariants}
-            className="text-xl md:text-2xl text-white/70 font-light tracking-wide mb-3"
+          {/* Tagline — word by word */}
+          <motion.div
+            variants={taglineContainer}
+            initial="hidden"
+            animate="visible"
+            className="mb-4"
           >
-            Precision-driven digital experiences.
-          </motion.p>
+            {taglineLines.map((line, li) => (
+              <div key={li} className="flex flex-wrap gap-x-2 overflow-hidden mb-1">
+                {line.split(" ").map((word, wi) => (
+                  <motion.span
+                    key={wi}
+                    variants={wordVariant}
+                    className="text-xl md:text-2xl text-white/80 font-light tracking-wide"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </div>
+            ))}
+          </motion.div>
 
           {/* Subtext */}
           <motion.p
             variants={itemVariants}
             className="text-sm md:text-base text-white/40 max-w-md mb-10 leading-relaxed"
           >
-            I build systems and experiences that are designed to perform,{" "}
-            <span className="text-white/60">not just exist.</span>
+            I build things to understand how they work.{" "}
+            <span className="text-white/60">I&apos;m methodical about getting sharper.</span>
           </motion.p>
 
           {/* CTA Buttons */}
@@ -128,7 +164,7 @@ export default function Hero() {
               onClick={() => handleScroll("work")}
               className="group flex items-center gap-3 px-7 py-3.5 bg-gold text-charcoal-deep font-display font-semibold text-sm tracking-wide hover:bg-gold-light transition-all duration-200"
             >
-              View Work
+              Calibration Log
               <svg
                 className="w-4 h-4 group-hover:translate-x-1 transition-transform"
                 viewBox="0 0 16 16"
@@ -145,13 +181,13 @@ export default function Hero() {
             </button>
             <button
               onClick={() => handleScroll("contact")}
-              className="px-7 py-3.5 border border-white/20 text-white/80 font-display font-medium text-sm tracking-wide hover:border-gold/50 hover:text-gold transition-all duration-200"
+              className="px-7 py-3.5 bg-white/10 border border-white/60 text-white font-display font-medium text-sm tracking-wide hover:bg-gold-light hover:border-gold-light hover:text-charcoal-deep transition-all duration-200"
             >
-              Start a Project
+              Get in Touch
             </button>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
@@ -160,7 +196,7 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.8, duration: 0.6 }}
       >
-        <span className="text-white/30 text-xs tracking-widest uppercase">Scroll</span>
+        <span className="text-white/30 text-xs tracking-widest uppercase font-mono">Scroll</span>
         <motion.div
           className="w-px h-10 bg-gradient-to-b from-gold/60 to-transparent"
           animate={{ scaleY: [0.3, 1, 0.3] }}
@@ -169,7 +205,7 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Bottom fade into page */}
+      {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-charcoal-deep to-transparent z-20 pointer-events-none" />
     </section>
   );

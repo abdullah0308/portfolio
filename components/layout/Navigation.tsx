@@ -5,10 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Work", href: "#work" },
-  { label: "Performance", href: "#performance" },
+  { label: "How I Think", href: "#process" },
+  { label: "Log", href: "#work" },
   { label: "Archery", href: "#archery" },
   { label: "Contact", href: "#contact" },
 ];
@@ -49,7 +47,9 @@ export default function Navigation() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-charcoal-deep/90 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+        scrolled
+          ? "bg-charcoal-deep/90 backdrop-blur-md border-b border-white/5"
+          : "bg-transparent"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
@@ -103,7 +103,7 @@ export default function Navigation() {
             onClick={() => handleLink("#contact")}
             className="text-sm font-display font-medium px-5 py-2 border border-gold/50 text-gold hover:bg-gold hover:text-charcoal-deep transition-all duration-200"
           >
-            Start a Project
+            Get in Touch
           </button>
         </div>
 
@@ -157,7 +157,7 @@ export default function Navigation() {
                   onClick={() => handleLink("#contact")}
                   className="w-full text-sm font-display font-medium px-5 py-2.5 bg-gold text-charcoal-deep hover:bg-gold-light transition-colors"
                 >
-                  Start a Project
+                  Get in Touch
                 </button>
               </li>
             </ul>

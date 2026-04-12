@@ -8,33 +8,33 @@ import { fadeUp, staggerContainer } from "@/lib/animations";
 const steps = [
   {
     phase: "Target",
-    icon: "◎",
     step: "01",
-    description: "Understanding the objective, defining the goal, and identifying what success looks like.",
+    description:
+      "Understand the problem. Define what good looks like. Identify what I don't know before I touch a single line.",
   },
   {
     phase: "Aim",
-    icon: "⊕",
     step: "02",
-    description: "Strategic planning, structuring ideas, and aligning direction before execution.",
+    description:
+      "Structure the approach. Research what I need. Plan before I build. A clear definition is worth more than three fast solutions.",
   },
   {
     phase: "Draw",
-    icon: "↑",
     step: "03",
-    description: "Designing and building with focus, ensuring every element serves a purpose.",
+    description:
+      "Build with focus. Every decision serves a purpose. No feature without a reason.",
   },
   {
     phase: "Release",
-    icon: "→",
     step: "04",
-    description: "Launching with precision, ensuring everything performs as intended.",
+    description:
+      "Ship, test, observe. The real feedback loop starts here. Not in the planning doc.",
   },
   {
-    phase: "Hit",
-    icon: "✦",
+    phase: "Adjust",
     step: "05",
-    description: "Monitoring, refining, and optimizing for long-term performance.",
+    description:
+      "Read where it landed. Improve from what actually happened, not what was assumed. Every deviation is data.",
   },
 ];
 
@@ -49,30 +49,34 @@ export default function Process() {
         <motion.div variants={staggerContainer} className="mb-20">
           <motion.div variants={fadeUp} className="flex items-center gap-3 mb-4">
             <div className="w-8 h-px bg-gold" />
-            <span className="text-gold text-xs tracking-[0.3em] uppercase font-medium">
-              The Shot
+            <span className="text-gold text-xs tracking-[0.3em] uppercase font-mono">
+              How I Think
             </span>
           </motion.div>
           <motion.h2
             variants={fadeUp}
             className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-white max-w-xl"
           >
-            My process. Every project is a shot.
+            Every problem is a shot.
           </motion.h2>
           <motion.p variants={fadeUp} className="text-white/40 text-base mt-4 max-w-lg">
-            From identifying the target to delivering results, each step is deliberate.
+            Deliberate, measured, and always followed by adjustment.
           </motion.p>
         </motion.div>
 
         {/* Desktop timeline */}
         <div className="hidden lg:block">
-          {/* Line */}
+          {/* Animated line */}
           <div className="relative h-px w-full bg-white/5 mb-10">
             <motion.div
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-gold/80 via-gold to-gold/40"
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-              transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] as [number,number,number,number], delay: 0.3 }}
+              transition={{
+                duration: 1.4,
+                ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+                delay: 0.3,
+              }}
               style={{ transformOrigin: "left", width: "100%" }}
             />
             {/* Arrow tip */}
@@ -83,7 +87,13 @@ export default function Process() {
               transition={{ delay: 1.7, duration: 0.3 }}
             >
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M0 5h8M5 1l4 4-4 4" stroke="#0C6170" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M0 5h8M5 1l4 4-4 4"
+                  stroke="#0C6170"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </motion.div>
           </div>
@@ -96,15 +106,23 @@ export default function Process() {
                 className="flex flex-col items-center text-center gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 + index * 0.15 }}
+                transition={{
+                  duration: 0.5,
+                  ease: "easeOut",
+                  delay: 0.5 + index * 0.15,
+                }}
               >
-                {/* Node */}
-                <div className="w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep flex-shrink-0 -mt-[22px] mb-2" />
-                {/* Step number */}
-                <span className="text-white/30 text-xs tracking-widest">{step.step}</span>
-                {/* Phase name */}
+                {/* Node — pulses when line reaches it */}
+                <motion.div
+                  className="w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep flex-shrink-0 -mt-[22px] mb-2"
+                  initial={{ scale: 0 }}
+                  animate={isInView ? { scale: 1 } : { scale: 0 }}
+                  transition={{ delay: 0.3 + index * 0.28, duration: 0.3, type: "spring", stiffness: 300 }}
+                />
+                <span className="text-white/30 text-xs tracking-widest font-mono">
+                  {step.step}
+                </span>
                 <h3 className="font-display font-bold text-white text-base">{step.phase}</h3>
-                {/* Description */}
                 <p className="text-white/40 text-xs leading-relaxed">{step.description}</p>
               </motion.div>
             ))}
@@ -113,7 +131,6 @@ export default function Process() {
 
         {/* Mobile timeline */}
         <div className="lg:hidden relative pl-8">
-          {/* Vertical line */}
           <div className="absolute left-3 top-0 bottom-0 w-px bg-white/5">
             <motion.div
               className="absolute top-0 left-0 w-full bg-gradient-to-b from-gold/80 to-gold/20"
@@ -131,13 +148,21 @@ export default function Process() {
                 className="relative flex gap-6 items-start"
                 initial={{ opacity: 0, x: -20 }}
                 animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 + index * 0.12 }}
+                transition={{
+                  duration: 0.5,
+                  ease: "easeOut",
+                  delay: 0.5 + index * 0.12,
+                }}
               >
                 <div className="absolute -left-8 top-1 w-3 h-3 rounded-full border-2 border-gold bg-charcoal-deep flex-shrink-0" />
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-gold/60 text-xs tracking-widest">{step.step}</span>
-                    <h3 className="font-display font-bold text-white text-lg">{step.phase}</h3>
+                    <span className="text-gold/60 text-xs tracking-widest font-mono">
+                      {step.step}
+                    </span>
+                    <h3 className="font-display font-bold text-white text-lg">
+                      {step.phase}
+                    </h3>
                   </div>
                   <p className="text-white/50 text-sm leading-relaxed">{step.description}</p>
                 </div>

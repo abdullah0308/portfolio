@@ -1,51 +1,118 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import { fadeUp, cardReveal, staggerContainer } from "@/lib/animations";
 
-const projects = [
+const shots = [
   {
     number: "01",
     name: "E-Commerce Platform",
-    type: "Web Experience",
+    type: "WordPress · WooCommerce",
     description:
-      "Designed for seamless user experience, optimized checkout flow, and scalable product management.",
-    tags: ["Next.js", "Stripe", "Performance"],
+      "Built a WooCommerce store from scratch. Product pages, cart, checkout, payment. The plugin handles a lot but you still have to know what you're doing.",
+    tags: ["WordPress", "WooCommerce", "PHP"],
     accent: "from-[#0C6170]/20 via-[#0C6170]/10 to-charcoal-deep",
-    lineColor: "#0C6170",
+    adjustment: "Performance on WooCommerce takes real work. Test with real data early, not at the end.",
   },
   {
     number: "02",
     name: "Corporate Website",
-    type: "Digital Branding",
+    type: "Next.js · Payload CMS",
     description:
-      "Structured for clarity, professionalism, and strong digital presence.",
-    tags: ["Design System", "CMS", "Brand"],
+      "Built in Next.js with Payload as the CMS. Developers can actually work with Payload without things falling apart. Good fit for structured content.",
+    tags: ["Next.js", "Payload CMS", "TypeScript"],
     accent: "from-zinc-700/20 via-slate-800/30 to-charcoal-deep",
-    lineColor: "#0C6170",
+    adjustment: "Content modeling matters more than the design does. You find that out after the first content migration.",
   },
   {
     number: "03",
-    name: "Booking System",
-    type: "Systems & Automation",
+    name: "Archery Training App",
+    type: "Next.js",
     description:
-      "Efficient scheduling experience with streamlined user interaction.",
-    tags: ["Calendar API", "Automation", "UX"],
+      "Built a web app to track training sessions, log arrow groupings, and spot patterns over time. Scratched my own itch. Turned out harder than expected to design for a sport you're also practicing.",
+    tags: ["Next.js", "TypeScript", "PostgreSQL"],
     accent: "from-[#0C6170]/15 via-[#0C6170]/8 to-charcoal-deep",
-    lineColor: "#0C6170",
+    adjustment: "Being the user and the developer at the same time is useful. You can't lie to yourself about what's confusing.",
   },
   {
     number: "04",
-    name: "Custom Web App",
-    type: "Web Experience",
+    name: "Multilingual Websites",
+    type: "WordPress · WPML",
     description:
-      "Tailored web application built from the ground up, designed for specific business needs and seamless user workflows.",
-    tags: ["React", "Custom Build", "UX"],
+      "Sites in multiple languages for clients operating across different markets. More decisions at the content and structure level than I expected going in.",
+    tags: ["WordPress", "WPML", "PHP"],
     accent: "from-[#0C6170]/20 via-[#0C6170]/10 to-charcoal-deep",
-    lineColor: "#0C6170",
+    adjustment: "Translation is not just text. Structure, navigation, and content relationships all have to work in every language.",
   },
 ];
+
+function ShotCard({ shot }: { shot: typeof shots[0] }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      variants={cardReveal}
+      whileHover={{ y: -4 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className={`group relative bg-gradient-to-br ${shot.accent} flex flex-col gap-6 min-h-[300px] overflow-hidden`}
+    >
+      {/* Background overlay */}
+      <div className="absolute inset-0 bg-charcoal-deep opacity-60" />
+
+      <div className="relative z-10 flex flex-col gap-5 h-full p-8 md:p-10">
+        {/* Top row */}
+        <div className="flex items-start justify-between">
+          <span className="text-white/20 text-xs tracking-widest font-mono">{shot.number}</span>
+          <span className="text-xs text-white/40 tracking-wider border border-white/10 px-2 py-1 font-mono">
+            {shot.type}
+          </span>
+        </div>
+
+        {/* Name */}
+        <div className="flex-1">
+          <h3 className="font-display font-bold text-2xl md:text-3xl text-white mb-3 group-hover:text-gold transition-colors duration-300">
+            {shot.name}
+          </h3>
+          <p className="text-white/50 text-sm leading-relaxed mb-4">{shot.description}</p>
+
+          {/* Adjustment — revealed on hover */}
+          <motion.div
+            className="overflow-hidden"
+            animate={hovered ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-start gap-2 pt-1">
+              <span className="text-gold/60 text-xs font-mono mt-0.5 shrink-0">→</span>
+              <p className="text-gold/70 text-xs leading-relaxed italic">{shot.adjustment}</p>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2">
+          {shot.tags.map((tag) => (
+            <span key={tag} className="text-xs text-white/30 tracking-wide font-mono">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Gold accent line — animates on hover */}
+      <motion.div
+        className="absolute bottom-0 left-0 h-px bg-gold origin-left"
+        initial={{ scaleX: 0 }}
+        whileHover={{ scaleX: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        style={{ width: "100%" }}
+      />
+    </motion.div>
+  );
+}
 
 export default function Work() {
   return (
@@ -55,8 +122,8 @@ export default function Work() {
         <motion.div variants={staggerContainer} className="mb-16">
           <motion.div variants={fadeUp} className="flex items-center gap-3 mb-4">
             <div className="w-8 h-px bg-gold" />
-            <span className="text-gold text-xs tracking-[0.3em] uppercase font-medium">
-              Work
+            <span className="text-gold text-xs tracking-[0.3em] uppercase font-mono">
+              Calibration Log
             </span>
           </motion.div>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -64,87 +131,24 @@ export default function Work() {
               variants={fadeUp}
               className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-white"
             >
-              Selected projects
+              Shots taken.
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-white/40 text-sm max-w-xs text-right hidden md:block">
-              Each project is a shot. Aimed, released, and measured by results.
+            <motion.p
+              variants={fadeUp}
+              className="text-white/40 text-sm hidden md:block"
+            >
+              Hover each card to see what was adjusted.
             </motion.p>
           </div>
         </motion.div>
 
-        {/* Projects grid */}
+        {/* Shots grid */}
         <motion.div
           variants={staggerContainer}
           className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5"
         >
-          {projects.map((project) => (
-            <motion.div
-              key={project.name}
-              variants={cardReveal}
-              whileHover={{ y: -4 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className={`group relative bg-gradient-to-br ${project.accent} p-8 md:p-10 flex flex-col gap-6 min-h-[280px] overflow-hidden`}
-            >
-              {/* Background texture */}
-              <div className="absolute inset-0 bg-charcoal-deep opacity-60" />
-
-              {/* Content */}
-              <div className="relative z-10 flex flex-col gap-6 h-full">
-                {/* Top row */}
-                <div className="flex items-start justify-between">
-                  <span className="text-white/20 text-xs tracking-widest font-display">
-                    {project.number}
-                  </span>
-                  <span className="text-xs text-white/40 tracking-wider border border-white/10 px-2 py-1">
-                    {project.type}
-                  </span>
-                </div>
-
-                {/* Project name */}
-                <div className="flex-1">
-                  <h3 className="font-display font-bold text-2xl md:text-3xl text-white mb-3 group-hover:text-gold transition-colors duration-300">
-                    {project.name}
-                  </h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{project.description}</p>
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="text-xs text-white/30 tracking-wide">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Arrow link */}
-                <div className="flex items-center gap-2 text-white/30 group-hover:text-gold transition-colors duration-200">
-                  <span className="text-xs tracking-widest uppercase">View Project</span>
-                  <svg
-                    className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M3 8h10M9 4l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Bottom gold accent line */}
-              <motion.div
-                className="absolute bottom-0 left-0 h-px bg-gold origin-left"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                style={{ width: "100%" }}
-              />
-            </motion.div>
+          {shots.map((shot) => (
+            <ShotCard key={shot.name} shot={shot} />
           ))}
         </motion.div>
       </div>
