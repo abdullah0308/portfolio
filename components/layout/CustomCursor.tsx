@@ -15,10 +15,15 @@ export default function CustomCursor() {
   const springY = useSpring(mouseY, { stiffness: 500, damping: 40, mass: 0.5 });
 
   useEffect(() => {
-    // Only show custom cursor on non-touch devices
-    const mq = window.matchMedia("(pointer: fine)");
-    setIsFinePointer(mq.matches);
-    if (!mq.matches) return;
+    // Only show custom cursor on true mouse devices (no touch capability)
+    const isMouse =
+      window.matchMedia("(pointer: fine)").matches &&
+      !window.matchMedia("(hover: none)").matches &&
+      !("ontouchstart" in window);
+    setIsFinePointer(isMouse);
+    if (!isMouse) return;
+
+    document.documentElement.classList.add("has-custom-cursor");
 
     const onMove = (e: MouseEvent) => {
       mouseX.set(e.clientX - 16);
@@ -43,6 +48,7 @@ export default function CustomCursor() {
         el.removeEventListener("mouseenter", onEnter);
         el.removeEventListener("mouseleave", onLeave);
       });
+      document.documentElement.classList.remove("has-custom-cursor");
     };
   }, [mouseX, mouseY]);
 

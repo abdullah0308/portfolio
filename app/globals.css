@@ -8,11 +8,10 @@
   --surface: #1E1E1E;
 }
 
-/* Hide native cursor on pointer devices only — CustomCursor SVG replaces it */
-@media (pointer: fine) {
-  *, *::before, *::after {
-    cursor: none !important;
-  }
+/* cursor:none applied only when JS confirms a true mouse device */
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none !important;
 }
 
 html {
