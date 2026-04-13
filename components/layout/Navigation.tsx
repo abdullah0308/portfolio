@@ -39,9 +39,11 @@ export default function Navigation() {
   }, []);
 
   const handleLink = (href: string) => {
-    setMobileOpen(false);
     const id = href.replace("#", "");
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMobileOpen(false);
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   };
 
   return (
