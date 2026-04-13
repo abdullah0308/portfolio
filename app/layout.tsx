@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import CustomCursor from "@/components/layout/CustomCursor";
@@ -13,6 +13,12 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  weight: ["400", "700"],
 });
 
 const geistMono = localFont({
@@ -31,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable} ${playfair.variable}`}>
       <body className="bg-charcoal-deep text-white antialiased">
         <CustomCursor />
         <Navigation />

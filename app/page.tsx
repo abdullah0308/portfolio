@@ -3,7 +3,7 @@ import About from "@/components/sections/About";
 import Process from "@/components/sections/Process";
 import Work from "@/components/sections/Work";
 import Archery from "@/components/sections/Archery";
-import Contact from "@/components/sections/Contact";
+import TheShot from "@/components/sections/TheShot";
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
       <Process />
       <Work />
       <Archery />
-      <Contact />
+      <TheShot />
     </>
   );
 }
